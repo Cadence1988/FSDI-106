@@ -30,7 +30,7 @@
 
             <div class="mt-4">
                 <label for="txtColor" class="form-label">Color</label>
-                <input id="txtColor" type="datetime-local" class="form-control">
+                <input id="txtColor" type="color" class="form-control">
             </div>
 
             <div class="mt-4">
@@ -57,10 +57,13 @@
             </div>
 
         </section>
+        <div id="popupContainer" class="popup-container" style="display: none;">
+            <h3>Task Saved!</h3>
+            <p>Your task was successfully saved.</p>
+            <button id="closePopupButton" class="btn btn-secondary">Close</button>
+        </div>
     </main>
 
-    <section id="list">Get section</section>
-    <section id="form">Form</section>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="./scripts/task.js"></script>
     <script src="./scripts/taskManager.js"></script>
