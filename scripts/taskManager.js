@@ -4,20 +4,18 @@ function loadTasks() {
         type: 'GET',
         url: 'http://fsdiapi.azurewebsites.net/api/tasks',
         success: function(response) {
-            console.log('Server response:', response); // Log the server response (Highlighted in purple)
+            console.log('Server response:', response);
 
-            // **Adjustment Start** (Highlighted in purple)
-            // Check if the response is an array or if the tasks are wrapped inside a property
+            // **Adjustment Start**
             const tasks = Array.isArray(response) ? response : response.tasks || response;
             // **Adjustment End**
 
-            // Ensure tasks is an array before using forEach
             if (Array.isArray(tasks)) {
                 tasks.forEach(task => {
-                    displayTask(task); // Call displayTask for each task
+                    displayTask(task);
                 });
             } else {
-                console.log('Tasks are not in the expected format:', tasks); // Log unexpected response format (Highlighted in purple)
+                console.log('Tasks are not in the expected format:', tasks);
             }
         },
         error: function(error) {
@@ -53,7 +51,7 @@ function resetForm() {
     $('#numBudget').val('');
 }
 
-// Updated saveTask function to include resetting the form
+// Function to save a task and reset the form
 function saveTask() {
     console.log('Task Manager');
     const title = $('#txtTitle').val();
@@ -78,6 +76,7 @@ function saveTask() {
             console.log(response);
             displayTask(taskSave); // Display the new task
             resetForm(); // Reset the form
+            showPopup(); // Show success popup
         },
         error: function(error) {
             console.log(error);
@@ -85,10 +84,37 @@ function saveTask() {
     });
 }
 
-// Updated init function to load tasks when the page loads
+// Function to delete all tasks
+function deleteAllTasks() {
+    $.ajax({
+        type: 'DELETE',
+        url: 'http://fsdiapi.azurewebsites.net/api/tasks/clear/your-email@example.com', // Replace with actual user identifier if needed
+        success: function(response) {
+            console.log('All tasks deleted:', response);
+            $('#list').empty(); // Clear the displayed tasks
+        },
+        error: function(error) {
+            console.log('Error deleting tasks:', error);
+        }
+    });
+}
+
+// Function to show the success popup
+function showPopup() {
+    $('#popupContainer').show(); // Show the popup
+}
+
+// Function to hide the success popup
+function hidePopup() {
+    $('#popupContainer').hide(); // Hide the popup
+}
+
+// Updated init function to include delete all tasks functionality
 function init() {
     loadTasks(); // Load and display all tasks
     $('#btnSave').click(saveTask); // Attach save button click event
+    $('#btnDeleteAll').click(deleteAllTasks); // Attach delete all button click event
+    $('#closePopupButton').click(hidePopup); // Attach close popup button click event
 }
 
 // Handling the delete button click for dynamically created tasks
@@ -98,4 +124,3 @@ $('#list').on('click', '.delete-button', function() {
 });
 
 window.onload = init;
-
